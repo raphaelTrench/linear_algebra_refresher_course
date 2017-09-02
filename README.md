@@ -1,1 +1,1 @@
-# linear_algebra_refresher_course
+# Udacity's Linear Algebra Refresher Course Linear Algebra python library
