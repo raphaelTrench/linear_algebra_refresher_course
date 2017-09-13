@@ -20,6 +20,11 @@ class Vector(object):
 	def __str__(self):
 		return 'Vector: {}'.format(self.coordinates)
 
+	def __iter__(self):
+		return iter(self.coordinates)
+
+	def __getitem__(self,index):
+		return self.coordinates[index]
 
 	def __eq__(self, v):
 		return self.coordinates == v.coordinates
@@ -139,7 +144,3 @@ class Vector(object):
 	def triangleArea(self,v):
 		vector = self.crossProduct(v)
 		return 0.5 * vector.magnitude()
-
-v = Vector([1.5,9.547,3.691])
-w = Vector([-6.007,0.124,5.772])
-print(v.triangleArea(w))

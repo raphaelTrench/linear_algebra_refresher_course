@@ -1,6 +1,6 @@
 from decimal import Decimal, getcontext
 
-from vector import Vector
+from Vector import Vector
 
 getcontext().prec = 30
 
@@ -42,6 +42,44 @@ class Line(object):
             else:
                 raise e
 
+    def isParallel(self,l):
+        n1 = self.normal_vector
+        n2 = l.normal_vector
+        return n1.isParallel(n2)
+
+    def intersectionWith(self,l):
+        if(self == l):
+            return self
+        A, B = self.normal_vector.coordinates
+        C, D = l.normal_vector.coordinates
+        k1 = self.constant_term
+        k2 = l.constant_term
+        if((A*D - B*C) == 0):
+            return None
+        x = (D*k1 - B*k2)/(A*D - B*C)
+        y = (-C*k1 + A*k2)/(A*D - B*C)
+        return Vector([x,y])
+
+    def __eq__(self,l):
+        if (self.normal_vector.isZeroVector()):
+            if (not l.normal_vector.isZeroVector()):
+                return False
+            else:
+                diff = self.constant_term - l.constant_term
+                return MyDecimal(diff).is_near_zero()
+        elif l.normal_vector.isZeroVector():
+            return False
+
+        if(not self.isParallel(l)):
+            return False
+
+        x0 = self.basepoint
+        y0 = l.basepoint
+        basepoint_difference = x0.minus(y0)
+
+        n = self.normal_vector
+        return basepoint_difference.isOrthogonal(n)
+        
 
     def __str__(self):
 
@@ -88,7 +126,6 @@ class Line(object):
 
         return output
 
-
     @staticmethod
     def first_nonzero_index(iterable):
         for k, item in enumerate(iterable):
@@ -100,3 +137,15 @@ class Line(object):
 class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
+
+line1 = Line(normal_vector = Vector(['4.046', '2.836']), constant_term = '1.21')
+line2 = Line(normal_vector = Vector(['10.115', '7.09']), constant_term = '3.025')
+print ('intersection 1:', line1.intersectionWith(line2))
+
+line1 = Line(normal_vector = Vector(['7.204', '3.182']), constant_term = '8.68')
+line2 = Line(normal_vector = Vector(['8.172', '4.114']), constant_term = '9.883')
+print ('intersection 2:', line1.intersectionWith(line2))
+
+line1 = Line(normal_vector = Vector(['1.182', '5.562']), constant_term = '1.21')
+line2 = Line(normal_vector = Vector(['1.773', '8.343']), constant_term = '3.025')
+print ('intersection 3:', line1.intersectionWith(line2))
