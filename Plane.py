@@ -124,8 +124,3 @@ class Plane(object):
 class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
-
-plane1 = Plane(normal_vector = Vector(['-7.926', '8.625', '-7.212']), constant_term = '-7.952')
-plane2 = Plane(normal_vector = Vector(['-2.642', '2.875', '-2.404']), constant_term = '-2.443')
-print (plane1 == plane2)
-print (plane1.isParallel(plane2))

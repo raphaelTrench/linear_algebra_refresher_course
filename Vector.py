@@ -37,9 +37,8 @@ class Vector(object):
 		new_coordinates = [x-y for x,y in zip(self.coordinates, v.coordinates)]
 		return Vector(new_coordinates)
 
-	def times_scalar(self,scalar):
-		new_coordinates = [x * Decimal(scalar) for x in self.coordinates]
-		return Vector(new_coordinates)
+	def times_scalar(self, factor):
+		return Vector([Decimal(factor) * coord for coord in self.coordinates])
 
 	def magnitude(self):
 		acc = 0
@@ -80,14 +79,7 @@ class Vector(object):
 		return (self.magnitude() < tolerance)
 
 	def isParallel(self, v):
-		if(self.isZeroVector() or v.isZeroVector()):
-			return True
-		scalar = self.coordinates[0] / v.coordinates[0]
-		i = 1
-		for i in range(len(self.coordinates)):
-			if((round(scalar,10) != round(self.coordinates[i]/v.coordinates[i],13))):
-				return False
-		return True
+		return (self.isZeroVector or v.isZeroVector or self.angle(v) == 0 or self.angle(v) == pi)
 
 	def isOrthogonal(self,v):
 		tolerance = 1e-10
